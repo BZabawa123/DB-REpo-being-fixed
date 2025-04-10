@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create RSO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Create New Registered Student Organization (RSO)</h2>
+        
+        <div class="alert alert-info">
+            <p><strong>Requirements:</strong></p>
+            <ul>
+                <li>You need at least 4 other students from {{ university.name }} to create an RSO</li>
+                <li>All members must have a registered account with their university email</li>
+                <li>You will be assigned as the administrator of this RSO</li>
+            </ul>
+        </div>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4>RSO Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">RSO Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4>RSO Members</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        All members must have a registered account with a {{ university.name }} email address.
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.member1_email.id_for_label }}" class="form-label">Member 1 Email</label>
+                            {{ form.member1_email }}
+                            {% if form.member1_email.errors %}
+                            <div class="text-danger">{{ form.member1_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.member2_email.id_for_label }}" class="form-label">Member 2 Email</label>
+                            {{ form.member2_email }}
+                            {% if form.member2_email.errors %}
+                            <div class="text-danger">{{ form.member2_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.member3_email.id_for_label }}" class="form-label">Member 3 Email</label>
+                            {{ form.member3_email }}
+                            {% if form.member3_email.errors %}
+                            <div class="text-danger">{{ form.member3_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.member4_email.id_for_label }}" class="form-label">Member 4 Email</label>
+                            {{ form.member4_email }}
+                            {% if form.member4_email.errors %}
+                            <div class="text-danger">{{ form.member4_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Create RSO</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join RSO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Join a Registered Student Organization (RSO)</h2>
+        
+        {% if messages %}
+        <div class="messages mb-4">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if user_rsos %}
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h4>Your Current RSO Memberships</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>RSO Name</th>
+                                <th>Status</th>
+                                <th>Your Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for membership in user_rsos %}
+                            <tr>
+                                <td>{{ membership.rso.name }}</td>
+                                <td>
+                                    {% if membership.rso.status == 'active' %}
+                                    <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                    <span class="badge bg-warning text-dark">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if membership.rso.admin == user %}
+                                    <span class="badge bg-primary">Administrator</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Member</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Join RSO</h4>
+            </div>
+            <div class="card-body">
+                <p>Select an active RSO from {{ university.name }} to join:</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        {{ form.rso }}
+                        {% if form.rso.errors %}
+                        <div class="text-danger">{{ form.rso.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Join RSO</button>
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
